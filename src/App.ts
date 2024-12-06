@@ -21,6 +21,7 @@ class App {
         this.app.appendChild(this.renderer.domElement)
 
         this.renderer.setSize(this.app.clientWidth, this.app.clientHeight);
+        this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
         window.addEventListener("resize", (event) => {
             this.renderer.setSize(this.app.clientWidth, this.app.clientHeight);
         });
@@ -34,7 +35,6 @@ class App {
 
         const grid = new THREE.GridHelper(5, 20, 0xffffff, 0x444444);
         this.currentPage.getScene().add(grid);
-
         new OrbitControls(this.currentPage.getCamera(), this.app);
     }
 
@@ -42,7 +42,7 @@ class App {
         this.renderer.clear();
         this.currentPage.clear();
         this.currentPage = this.pages[name];
-        this.currentPage.getCamera().aspect = this.app.clientWidth / this.app.clientHeight;
+        this.currentPage.resize();
     }
 
     private render = (): void => {

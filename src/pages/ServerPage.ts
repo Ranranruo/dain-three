@@ -8,8 +8,10 @@ class ServerPage extends Page {
         super();
         const server = new ServerEntity();
         const serverIns = server.create();
-        serverIns.position.set(0, 0, 0);
+        serverIns.position.set(0, .75, 0);
         this.scene.add(serverIns);
+        this.camera.position.set(0, 0, 10);
+        this.camera.lookAt(serverIns.getObjectByName("glass")!.position);
     }
     clear(): void {
     }

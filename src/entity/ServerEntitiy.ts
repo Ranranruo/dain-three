@@ -1,14 +1,20 @@
 import * as THREE from "three";
 import Entity from "./Entity";
+import ServerRackComponent from "../component/server/ServerRackComponent";
 
-class ServerEntity implements Entity{
+class ServerEntity extends Entity{
     
     create = (): THREE.Group => {
         const server = new THREE.Group();
         
-        // const serverRack = new Server
+        const serverRack = new ServerRackComponent({
+            mainColor: 0x111111,
+            subColor: 0xffffff,
+        });
         
-        // server.add(serverRack);
+        
+
+        server.add(serverRack.craete());
         return server;
     }
     clear(): void {

@@ -9,7 +9,13 @@ abstract class Page{
 
     constructor() {
         this.scene = new THREE.Scene();
+        window.addEventListener("resize", this.resize);
     }
+
+    resize = () => {
+        this.camera.aspect = app.clientWidth / app.clientHeight;
+        this.camera.updateProjectionMatrix();
+    };
 
     getScene = (): THREE.Scene => {
         return this.scene;
@@ -18,6 +24,7 @@ abstract class Page{
     getCamera = (): THREE.PerspectiveCamera => {
         return this.camera;
     }
+
     abstract clear(): void;
 }
 

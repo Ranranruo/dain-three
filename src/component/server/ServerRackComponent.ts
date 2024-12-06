@@ -3,24 +3,108 @@ import Component, { ComponentArgs } from "../Component";
 
 
 interface ServerRackComponentArgs extends ComponentArgs {
-    subColor: number;
+    glassColor?: number;
 };
 
 class ServerRackComponent extends Component{
     protected mainColor: number;
-    
+    private glassColor: number;
+
     constructor(args: ServerRackComponentArgs) {
         super();
-        this.mainColor = 0xffffff;
+        this.mainColor = args.mainColor;
+        this.glassColor = args.glassColor ?? 0xffffff;
     }
 
     craete(): THREE.Group {
         const serverRack: THREE.Group = new THREE.Group();
-
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({color: 0xffffff})
-
+        
+        const pointLight = new THREE.PointLight(0xffffff, 12);
+        pointLight.position.set(0, 2, 0);
+        
+        const rack: THREE.Mesh = this.getRack("rack");
+        rack.position.set(0, 0, -.025);
+        
+        const glass: THREE.Mesh = this.getGlass("glass");
+        glass.position.set(0, 0, .465);
+        
+        const door: THREE.Group = this.getDoor("door");
+        door.position.set(0, 0, .475);
+        
+        
+        serverRack.add(pointLight);
+        serverRack.add(rack);
+        serverRack.add(glass);
+        serverRack.add(door)
         return serverRack;
+    }
+    private getRack(name: string): THREE.Mesh {
+        const rackGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1.5, .95);
+        const rackMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial({
+            color: this.mainColor,
+            metalness: .6,
+            roughness: .4
+        });
+        const rack: THREE.Mesh = new THREE.Mesh(rackGeometry, rackMaterial);
+        rack.name = name;
+        return rack;
+    }
+
+    private getGlass(name: string): THREE.Mesh {
+        const glassGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(.8, 1.3, .03);
+        const glassMaterial: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+            color: this.glassColor,
+            opacity: .2,
+            transparent: true
+        });
+
+        const glass: THREE.Mesh = new THREE.Mesh(glassGeometry, glassMaterial);
+        glass.name = name;
+        return glass;
+    }
+
+    private getDoor(name: string): THREE.Group {
+        const door: THREE.Group = new THREE.Group();
+        
+
+        const doorTop: THREE.Mesh = new THREE.Mesh(
+            new THREE.BoxGeometry(1, .1, .05),
+            new THREE.MeshBasicMaterial({
+                color: this.mainColor
+            })
+        );
+        doorTop.position.set(0, .7, 0);
+
+        const doorBottom: THREE.Mesh = new THREE.Mesh(
+            new THREE.BoxGeometry(1, .1, .05),
+            new THREE.MeshBasicMaterial({
+                color: this.mainColor
+            })
+        );
+        doorBottom.position.set(0, -.7, 0);
+
+        const doorLeft: THREE.Mesh = new THREE.Mesh(
+            new THREE.BoxGeometry(.1, 1.3, .05),
+            new THREE.MeshBasicMaterial({
+                color: this.mainColor
+            })
+        );
+        doorLeft.position.set(.45, 0, 0);
+
+        const doorRight: THREE.Mesh = new THREE.Mesh(
+            new THREE.BoxGeometry(.1, 1.3, .05),
+            new THREE.MeshBasicMaterial({
+                color: this.mainColor
+            })
+        );
+        doorRight.position.set(-.45, 0, 0);
+
+        door.add(doorBottom);
+        door.add(doorTop);
+        door.add(doorLeft);
+        door.add(doorRight);
+
+        return door;
     }
 
     clear(): void {
