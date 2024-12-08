@@ -6,7 +6,7 @@ interface ServerRackComponentArgs extends ComponentArgs {
     glassColor?: number;
 };
 
-class ServerRackComponent extends Component{
+class ServerRackComponent extends Component {
     protected mainColor: number;
     private glassColor: number;
 
@@ -16,23 +16,24 @@ class ServerRackComponent extends Component{
         this.glassColor = args.glassColor ?? 0xffffff;
     }
 
-    craete(): THREE.Group {
+    create(): THREE.Object3D {
+
         const serverRack: THREE.Group = new THREE.Group();
-        
+
         const pointLight = new THREE.PointLight(0xffffff, 12);
         pointLight.position.set(0, 2, 0);
-        
+
         const rack: THREE.Mesh = this.getRack("rack");
         rack.position.set(0, 0, -.025);
-        
+
         const glass: THREE.Mesh = this.getGlass("glass");
         glass.position.set(0, 0, .465);
-        
+
         const door: THREE.Group = this.getDoor("door");
         door.position.set(0, 0, .475);
-        
-        
-        serverRack.add(pointLight);
+
+
+        // serverRack.add(pointLight);
         serverRack.add(rack);
         serverRack.add(glass);
         serverRack.add(door)
@@ -52,10 +53,15 @@ class ServerRackComponent extends Component{
 
     private getGlass(name: string): THREE.Mesh {
         const glassGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(.8, 1.3, .03);
-        const glassMaterial: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
-            color: this.glassColor,
-            opacity: .2,
-            transparent: true
+        const glassMaterial: THREE.MeshStandardMaterial = new THREE.MeshPhysicalMaterial({
+            metalness: 0,
+            roughness: 1,
+            envMapIntensity: 0.9,
+            clearcoat: 1,
+            transparent: true,
+            transmission: .95,
+            opacity: 1,
+            reflectivity: 0.2,
         });
 
         const glass: THREE.Mesh = new THREE.Mesh(glassGeometry, glassMaterial);
@@ -65,36 +71,44 @@ class ServerRackComponent extends Component{
 
     private getDoor(name: string): THREE.Group {
         const door: THREE.Group = new THREE.Group();
-        
+
 
         const doorTop: THREE.Mesh = new THREE.Mesh(
             new THREE.BoxGeometry(1, .1, .05),
-            new THREE.MeshBasicMaterial({
-                color: this.mainColor
+            new THREE.MeshStandardMaterial({
+                color: this.mainColor,
+                metalness: .6,
+                roughness: .4
             })
         );
         doorTop.position.set(0, .7, 0);
 
         const doorBottom: THREE.Mesh = new THREE.Mesh(
             new THREE.BoxGeometry(1, .1, .05),
-            new THREE.MeshBasicMaterial({
-                color: this.mainColor
+            new THREE.MeshStandardMaterial({
+                color: this.mainColor,
+                metalness: .6,
+                roughness: .4
             })
         );
         doorBottom.position.set(0, -.7, 0);
 
         const doorLeft: THREE.Mesh = new THREE.Mesh(
             new THREE.BoxGeometry(.1, 1.3, .05),
-            new THREE.MeshBasicMaterial({
-                color: this.mainColor
+            new THREE.MeshStandardMaterial({
+                color: this.mainColor,
+                metalness: .6,
+                roughness: .4
             })
         );
         doorLeft.position.set(.45, 0, 0);
 
         const doorRight: THREE.Mesh = new THREE.Mesh(
             new THREE.BoxGeometry(.1, 1.3, .05),
-            new THREE.MeshBasicMaterial({
-                color: this.mainColor
+            new THREE.MeshStandardMaterial({
+                color: this.mainColor,
+                metalness: .6,
+                roughness: .4
             })
         );
         doorRight.position.set(-.45, 0, 0);
