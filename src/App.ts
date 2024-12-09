@@ -17,9 +17,10 @@ class App {
         this.app = document.querySelector("#app")!;
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.currentPage = new DefaultPage();
-
+        
         this.app.appendChild(this.renderer.domElement)
-
+        
+        this.renderer.shadowMap.enabled = true;
         this.renderer.setSize(this.app.clientWidth, this.app.clientHeight);
         this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
         window.addEventListener("resize", (event) => {

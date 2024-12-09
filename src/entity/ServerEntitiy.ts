@@ -6,17 +6,22 @@ import RackServerComponent from "../component/server/RackServerComponent";
 class ServerEntity extends Entity{
     
     create = (): THREE.Group => {
-        const server = new THREE.Group();
-        const serverRack = new ServerRackComponent({
+        const serverEntitiy = new THREE.Group();
+        
+        const serverRackComponent = new ServerRackComponent({
             mainColor: 0x111111,
             subColor: 0xffffff,
         });
-        const rackServer = new RackServerComponent({
-            mainColor: 0xc0c0c0
-        })
-        // server.add(serverRack.create());
+
+        const rackServerComponent = new RackServerComponent({
+            mainColor: 0x555555
+        });
+
+        const serverRack = serverRackComponent.create();
+        const rackServer = rackServerComponent.create();
         
-        return server;
+        serverEntitiy.add(rackServer);
+        return serverEntitiy;
     }
     clear(): void {
         throw new Error("Method not implemented.");

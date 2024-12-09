@@ -16,7 +16,7 @@ class ServerRackComponent extends Component {
         this.glassColor = args.glassColor ?? 0xffffff;
     }
 
-    create(): THREE.Object3D {
+    public create(): THREE.Group {
 
         const serverRack: THREE.Group = new THREE.Group();
 
@@ -29,7 +29,7 @@ class ServerRackComponent extends Component {
         const glass: THREE.Mesh = this.getGlass("glass");
         glass.position.set(0, 0, .465);
 
-        const door: THREE.Group = this.getDoor("door");
+        const door: THREE.Group = this.getDoorGroup("door");
         door.position.set(0, 0, .475);
 
 
@@ -54,6 +54,7 @@ class ServerRackComponent extends Component {
     private getGlass(name: string): THREE.Mesh {
         const glassGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(.8, 1.3, .03);
         const glassMaterial: THREE.MeshStandardMaterial = new THREE.MeshPhysicalMaterial({
+            color: this.glassColor,
             metalness: 0,
             roughness: 1,
             envMapIntensity: 0.9,
@@ -69,7 +70,7 @@ class ServerRackComponent extends Component {
         return glass;
     }
 
-    private getDoor(name: string): THREE.Group {
+    private getDoorGroup(name: string): THREE.Group {
         const door: THREE.Group = new THREE.Group();
 
 
@@ -121,7 +122,7 @@ class ServerRackComponent extends Component {
         return door;
     }
 
-    clear(): void {
+    public clear(): void {
         throw new Error("Method not implemented.");
     }
 }

@@ -16,8 +16,8 @@ abstract class Component {
             this.subColor = subColor;
     }
 
-    abstract create(): THREE.Object3D;
+    public abstract create(): THREE.Group;
 
-    abstract clear(): void;
+    public abstract clear(): void;
 }
 export default Component;
